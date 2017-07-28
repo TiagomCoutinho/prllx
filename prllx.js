@@ -1,5 +1,5 @@
 /*
-#  PRLLX v0.2.1 - Tiago Moreno Coutinho
+#  PRLLX v0.2.2 - Tiago Moreno Coutinho
 #  https://github.com/TiagomCoutinho
 #
 #  Adaptacao do codico da Morris Digital
@@ -15,19 +15,25 @@ $(document).ready(function(){
 function scrollEvent(){
   if($(window).width())
   $('[prllx="true"]').each(function(){
-    if($(this).attr('prllx-touch') === 'false') {if(SeePrllxTouch()){var prllxTouch = true;}}
+    if($(this).attr('prllx-touch') === 'false' && SeePrllxTouch()) {var prllxTouch = true;}
     if(!prllxTouch){
       prllxtop = $(window).scrollTop();
-      prllxhEight = $(window).height();
-      viewportBottom = prllxhEight+prllxtop;
+      prllxHeight = $(window).height();
+      viewportBottom = prllxHeight+prllxtop;
       prllxtransform = prllxtop * $(this).attr('prllx-speed');
-      if($(this).attr('prllx-dc') === 'bottom' || $(this).attr('prllx-dc') === 'top'){
-        if($(this).attr('prllx-dc') === 'top'){sym = '-';}else{sym = '';}
-        $(this).css('transform','translate3d(0, ' + sym + prllxtransform +'px,0)');
-      }else if($(this).attr('prllx-dc') === 'left' || $(this).attr('prllx-dc') === 'right'){
-        if($(this).attr('prllx-dc') === 'left'){sym = '-';}else{sym = '';}
-        $(this).css('transform','translate3d(' + sym + prllxtransform +'px,0,0)');
+      if($(this).attr('prllx-dc') === 'bottom'){
+        prllxCalc = '0,' + prllxtransform + 'px,0';
+      }else if($(this).attr('prllx-dc') === 'top'){
+        prllxCalc = '0,-' + prllxtransform + 'px,0';
+      }else if($(this).attr('prllx-dc') === 'left'){
+        prllxCalc = '-' + prllxtransform + 'px,0,0';
+      }else if($(this).attr('prllx-dc') === 'right'){
+        prllxCalc = prllxtransform + 'px,0,0';
+      }else{
+        console.log("prllx-dc not declared");
+        prllxCalc = '0,0,0';
       }
+      $(this).css('transform','translate3d('+ prllxCalc +')');
     }
   });
 }   
